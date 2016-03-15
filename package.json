@@ -1,0 +1,46 @@
+{
+  "name": "stopstop",
+  "version": "1.0.0",
+  "description": "simple telegram output passer",
+  "main": "lib/index.js",
+  "scripts": {
+    "build": "lsc -co lib src",
+    "clean": "rm -rf lib",
+    "doctoc": "doctoc --notitle README.md",
+    "prepublsh": "npm run build",
+    "postpublish": "npm run clean",
+    "test": "lsc test/~"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://stawberri@github.com/stawberri/stopstop.git"
+  },
+  "keywords": [
+    "telegrams",
+    "telegram",
+    "send",
+    "output",
+    "notifications",
+    "notification",
+    "messages",
+    "message",
+    "debug",
+    "chats",
+    "chat",
+    "api"
+  ],
+  "author": "Pudding <aideen@aideen.pw> (https://aideen.pw/)",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/stawberri/stopstop/issues"
+  },
+  "homepage": "https://github.com/stawberri/stopstop#readme",
+  "dependencies": {
+    "request": "^2.69.0"
+  },
+  "devDependencies": {
+    "doctoc": "^1.0.0",
+    "nock": "^7.2.2",
+    "tape": "^4.5.1"
+  }
+}
