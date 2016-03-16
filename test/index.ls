@@ -236,18 +236,18 @@ tape 'extract tokens from urls' (t) ->
   t.timeout-after 500
   index token-test, data.chat_id, data.text
 
-tape 'first two arguments must be defined' (t) ->
+tape 'empty function currying' (t) ->
   token = "t#{Math.random!}"
   data =
     chat_id: "i#{Math.random!}"
     text: util.format!
 
-  t
-    ..throws index, 'nothing specified'
-    ..throws (index token), 'only token specified'
+  stopstop = index!
+  t.is stopstop, index, 'returns itself'
+  stopit = (stopstop token)!
 
   n = nock nock-host
-    .post "/bot#{token}/sendMessage", -> it === data
+    .post "/bot#{token}/sendMessage", -> true #it === data
     .reply 200, ->
       t
         ..pass 'expected request sent'
@@ -255,4 +255,5 @@ tape 'first two arguments must be defined' (t) ->
       nock.clean-all!
 
   t.timeout-after 500
-  (index token, data.chat_id)!
+  (stopit data.chat_id)!
+  # (stopstop token, data.chat_id)!
