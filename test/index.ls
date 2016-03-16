@@ -7,9 +7,12 @@ tape 'function definition' -> it
 nock-host = \https://api.telegram.org/
 
 tape 'simple use case' (t) ->
-  token = "t#{Math.random!}"
+  token = "#{Math.floor 999999999 * Math.random!}:token_test"
   data =
-    chat_id: "i#{Math.random!}"
+    chat_id: "
+      #{if Math.random! < 0.5 then '-' else ''}
+      #{Math.floor 999999999 * Math.random!}
+    "
     text: "t#{Math.random!}"
 
   n = nock nock-host
@@ -21,12 +24,16 @@ tape 'simple use case' (t) ->
       nock.clean-all!
 
   t.timeout-after 500
+  t.comment data.chat_id
   index token, data.chat_id, data.text
 
 tape 'curry api token' (t) ->
-  token = "t#{Math.random!}"
+  token = "#{Math.floor 999999999 * Math.random!}:token_test"
   data =
-    chat_id: "i#{Math.random!}"
+    chat_id: "
+      #{if Math.random! < 0.5 then '-' else ''}
+      #{Math.floor 999999999 * Math.random!}
+    "
     text: "t#{Math.random!}"
 
   n = nock nock-host
@@ -42,9 +49,12 @@ tape 'curry api token' (t) ->
   curry data.chat_id, data.text
 
 tape 'curry api token and recipient together' (t) ->
-  token = "t#{Math.random!}"
+  token = "#{Math.floor 999999999 * Math.random!}:token_test"
   data =
-    chat_id: "i#{Math.random!}"
+    chat_id: "
+      #{if Math.random! < 0.5 then '-' else ''}
+      #{Math.floor 999999999 * Math.random!}
+    "
     text: "t#{Math.random!}"
 
   n = nock nock-host
@@ -60,9 +70,12 @@ tape 'curry api token and recipient together' (t) ->
   curry data.text
 
 tape 'curry api token and recipient separately' (t) ->
-  token = "t#{Math.random!}"
+  token = "#{Math.floor 999999999 * Math.random!}:token_test"
   data =
-    chat_id: "i#{Math.random!}"
+    chat_id: "
+      #{if Math.random! < 0.5 then '-' else ''}
+      #{Math.floor 999999999 * Math.random!}
+    "
     text: "t#{Math.random!}"
 
   n = nock nock-host
@@ -79,7 +92,7 @@ tape 'curry api token and recipient separately' (t) ->
   curry data.text
 
 tape 'more complicated outputs' (t) ->
-  token = "t#{Math.random!}"
+  token = "#{Math.floor 999999999 * Math.random!}:token_test"
 
   test-string = "s#{Math.random!} %j #{Math.random!}s"
   test-data =
@@ -89,7 +102,10 @@ tape 'more complicated outputs' (t) ->
     "d#{Math.random!}": "dd#{Math.random!}"
 
   data =
-    chat_id: "i#{Math.random!}"
+    chat_id: "
+      #{if Math.random! < 0.5 then '-' else ''}
+      #{Math.floor 999999999 * Math.random!}
+    "
     text: util.format test-string, test-data
 
   n = nock nock-host
@@ -104,9 +120,12 @@ tape 'more complicated outputs' (t) ->
   index token, data.chat_id, test-string, test-data
 
 tape 'function chaining' (t) ->
-  token = "t#{Math.random!}"
+  token = "#{Math.floor 999999999 * Math.random!}:token_test"
   data =
-    chat_id: "i#{Math.random!}"
+    chat_id: "
+      #{if Math.random! < 0.5 then '-' else ''}
+      #{Math.floor 999999999 * Math.random!}
+    "
     text: "t#{Math.random!}"
   data-alt =
     chat_id: data.chat_id
@@ -134,7 +153,10 @@ tape 'full parameter specifying' (t) ->
   data =
     text: "t#{Math.random!}"
   test-data =
-    chat_id: "i#{Math.random!}"
+    chat_id: "
+      #{if Math.random! < 0.5 then '-' else ''}
+      #{Math.floor 999999999 * Math.random!}
+    "
     "a#{Math.random!}": "aa#{Math.random!}"
     "b#{Math.random!}": "bb#{Math.random!}"
     "c#{Math.random!}": "cc#{Math.random!}"
@@ -159,7 +181,10 @@ tape 'full parameter currying' (t) ->
   data =
     text: "t#{Math.random!}"
   test-data =
-    chat_id: "i#{Math.random!}"
+    chat_id: "
+      #{if Math.random! < 0.5 then '-' else ''}
+      #{Math.floor 999999999 * Math.random!}
+    "
     "a#{Math.random!}": "aa#{Math.random!}"
     "b#{Math.random!}": "bb#{Math.random!}"
     "c#{Math.random!}": "cc#{Math.random!}"
@@ -187,7 +212,10 @@ tape 'full parameter chaining' (t) ->
   data-alt =
     text: "t#{Math.random!}"
   test-data =
-    chat_id: "i#{Math.random!}"
+    chat_id: "
+      #{if Math.random! < 0.5 then '-' else ''}
+      #{Math.floor 999999999 * Math.random!}
+    "
     "a#{Math.random!}": "aa#{Math.random!}"
     "b#{Math.random!}": "bb#{Math.random!}"
     "c#{Math.random!}": "cc#{Math.random!}"
@@ -220,7 +248,10 @@ tape 'extract tokens from urls' (t) ->
   token = "tle#{Math.random!}"
   token-test = "https://api.telegram.org/bot#{token}/sendMessage"
   data =
-    chat_id: "i#{Math.random!}"
+    chat_id: "
+      #{if Math.random! < 0.5 then '-' else ''}
+      #{Math.floor 999999999 * Math.random!}
+    "
     text: "t#{Math.random!}"
 
   n = nock nock-host
@@ -235,9 +266,12 @@ tape 'extract tokens from urls' (t) ->
   index token-test, data.chat_id, data.text
 
 tape 'empty function calling' (t) ->
-  token = "t#{Math.random!}"
+  token = "#{Math.floor 999999999 * Math.random!}:token_test"
   data =
-    chat_id: "i#{Math.random!}"
+    chat_id: "
+      #{if Math.random! < 0.5 then '-' else ''}
+      #{Math.floor 999999999 * Math.random!}
+    "
     text: util.format!
 
   t
