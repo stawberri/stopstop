@@ -22,6 +22,7 @@ var stopstop = require('stopstop');
   - [stopstop(token, chatId, stopstop[, options])](#stopstoptoken-chatid-stopstop-options)
 - [Curried functions](#curried-functions)
   - [Chaining stopstop](#chaining-stopstop)
+- [It's just like `console.log`!](#its-just-like-consolelog)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
@@ -95,3 +96,16 @@ stopme = stopstop("<token>", 123456789, "Hi! I'm a debug message!");
 stopme('I have so many things to say.')("Here's another message for you~");
 ```
 
+## It's just like `console.log`!
+I really did mean it when I said that it's just like `console.log`, by the way! The only thing that you can't pass stopstop as data is stopstop itself.
+
+```javascript
+stopme = stopstop("<token>", 123456789, "Hi! I'm a debug message!");
+
+stopme('multiple', 'parameters!');
+stopme(['arrays', 'too', '!']);
+stopme({objects: 'and'}, ['arrays'], {both: ['at', 'once', '?!']});
+stopme(function() {return 'When would you ever need to log a function?';});
+stopme([stopstop, 'If you really HAD to send yourself stopstop.']);
+stopme('Guessed it? stopstop uses %s on its parameters.', 'util.format');
+```
