@@ -1,6 +1,6 @@
 {
   "name": "stopstop",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "simple telegram output passer",
   "main": "lib/index.js",
   "scripts": {
