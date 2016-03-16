@@ -14,17 +14,41 @@ var stopstop = require('stopstop');
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
 
 
-- [Making a bot and finding your chat id](#making-a-bot-and-finding-your-chat-id)
-  - [Getting a telegram bot's api token](#getting-a-telegram-bots-api-token)
-  - [Getting your chat id](#getting-your-chat-id)
 - [Basic usage](#basic-usage)
   - [stopstop(token[, chatId[, data[, ...]]])](#stopstoptoken-chatid-data-)
   - [stopstop(token, chatId, stopstop[, options])](#stopstoptoken-chatid-stopstop-options)
+- [Making a bot and finding your chat id](#making-a-bot-and-finding-your-chat-id)
+  - [Getting a telegram bot's api token](#getting-a-telegram-bots-api-token)
+  - [Getting your chat id](#getting-your-chat-id)
 - [Curried functions](#curried-functions)
   - [Chaining stopstop](#chaining-stopstop)
 - [It's just like `console.log`!](#its-just-like-consolelog)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
+
+## Basic usage
+stopstop takes three parameters: your bot's api token, your chat id, and whatever you wish to send. That last part sounds pretty vague, and that's because it is! After those first two required parameters, you can pass just about anything you would wannya pass to `console.log` to stopstop!
+
+```javascript
+stopstop('<token>', 123456789, 'A telegram I have for thee~');
+```
+
+### stopstop(token[, chatId[, data[, ...]]])
+Have the Telegram bot with your provided token send data to your specified chat id. Note that stopstop doesn't accept a callback, because your script doesn't actually get notified if it succeeded or not! Seeing that the whole point of this is to notify _you_, it just seems kinda redundant. You might also notice that nearly all of stopstop's parameters are optional in a really weird, nested way. That's because it's curried! If you're not sure what that means, keep reading~
+* `token` _string_. Your bot's api token! Your messages will come from the bot this corresponds to.
+* `chatId` _number_. This is where you specify who you want your bot to send messages to.
+* `data` _anything_. Just think of this part as the arguments you would pass to `console.log` and you'll be fine!
+
+### stopstop(token, chatId, stopstop[, options])
+You're probably wondering why I'm providing documentation for the same function twice, and why `stopstop` is being passed to itself. Since you can pass _anything_ as `data`, I needed some way for you to signify that you wanted this version of stopstop! This function is _also_ curried, which is why options is optional.
+* `options` _object_. If you ever feel like you want a little more control of what your bot sends, this object allows you to specify what stopstop sends to Telegram! You'll wannya refer to [Telegram's sendMessage reference](https://core.telegram.org/bots/api#sendmessage) to learn more about what you can provide in options. Don't worry about providing `chat_id`.
+
+```javascript
+stopstop('<token>', 123456789, stopstop, {
+    text: 'I humbly apologize for my *boldness*, dear creator.',
+    parse_mode: 'markdown'
+});
+```
 
 ## Making a bot and finding your chat id
 Before you can start using stopstop, you will need a Telegram bot and the chat ids of the chat you wish to have your bot notify.
@@ -50,40 +74,17 @@ This is a little harder, and requires a bit of manual API work.
       "id": 123456789,
       "first_name": "Your",
       "last_name": "Name",
-      "username": "your_username"
+      "username": "YourUsername"
     }
     ```
-
-## Basic usage
-stopstop takes three parameters: your bot's api token, your chat id, and whatever you wish to send. That last part sounds pretty vague, and that's because it is! After those first two required parameters, you can pass just about anything you would wannya pass to `console.log` to stopstop!
-
-```javascript
-stopstop('<token>', 123456789, "Hi! I'm a debug message!");
-```
-
-### stopstop(token[, chatId[, data[, ...]]])
-Have the Telegram bot with your provided token send data to your specified chat id. Note that stopstop doesn't accept a callback, because your script doesn't actually get notified if it succeeded or not! Seeing that the whole point of this is to notify _you_, it just seems kinda redundant. You might also notice that nearly all of stopstop's parameters are optional in a really weird, nested way. That's because it's curried! If you're not sure what that means, keep reading~
-* `token` _string_. Your bot's api token! Your messages will come from the bot this corresponds to.
-* `chatId` _number_. This is where you specify who you want your bot to send messages to.
-* `data` _anything_. Just think of this part as the arguments you would pass to `console.log` and you'll be fine!
-
-### stopstop(token, chatId, stopstop[, options])
-You're probably wondering why I'm providing documentation for the same function twice, and why `stopstop` is being passed to itself. Since you can pass _anything_ as `data`, I needed some way for you to signify that you wanted this version of stopstop! This function is _also_ curried, which is why options is optional.
-* `options` _object_. If you ever feel like you want a little more control of what your bot sends, this object allows you to specify what stopstop sends to Telegram! You'll wannya refer to [Telegram's sendMessage reference](https://core.telegram.org/bots/api#sendmessage) to learn more about what you can provide in options. Don't worry about providing `chat_id`.
-
-```javascript
-stopstop("<token>", 123456789, stopstop, {
-    text: "Oh, I'm so *bold*~",
-    parse_mode: 'markdown'
-});
-```
 
 ## Curried functions
 I said above that stopstop is curried, and you might be wondering what currying is. The idea is pretty simple: stopstop actually requires at least three parameters (while stopstop's second variation requires four). If you pass less than this number of parameters to stopstop, stopstop will return a new version of itself with these functions filled in!
 
 ```javascript
-stopme = stopstop("<token>", 123456789);
-stopme("Hi! I'm a debug message!");
+stopit = stopstop('<token>');
+stopme = stopit(123456789);
+stopme("Stop! There's been a terrible misunderstanding!");
 ```
 
 That's literally all there is to it! It allows you to define your api token and chat id once and never need to worry about it again!
@@ -92,17 +93,17 @@ That's literally all there is to it! It allows you to define your api token and 
 This isn't something curried functions usually do, but stopstop actually also returns itself even when you specify all the arguments! This lets you chain stopstop. Unfortunately, there aren't any guarantees that you'll receive these messages in order, so try to write them so that they don't sound weird if they arrive in a different order!
 
 ```javascript
-stopme = stopstop("<token>", 123456789, "Hi! I'm a debug message!");
-stopme('I have so many things to say.')("Here's another message for you~");
+stopme = stopstop('<token>', 123456789, 'A series of telegrams I offer');
+stopme('Enough to fill a coffer')("If you aren't a scoffer");
 ```
 
 ## It's just like `console.log`!
 I really did mean it when I said that it's just like `console.log`, by the way! The only thing that you can't pass stopstop as data is stopstop itself.
 
 ```javascript
-stopme = stopstop("<token>", 123456789, "Hi! I'm a debug message!");
+stopme = stopstop('<token>')(123456789)('Oh, for the love of curry!');
 
-stopme('multiple', 'parameters!');
+stopme('multiple', 'parameters', '!!');
 stopme(['arrays', 'too', '!']);
 stopme({objects: 'and'}, ['arrays'], {both: ['at', 'once', '?!']});
 stopme(function() {return 'When would you ever need to log a function?';});
