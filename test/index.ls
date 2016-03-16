@@ -131,15 +131,17 @@ tape 'function chaining' (t) ->
   chain data-alt.text
 
 tape 'full parameter specifying' (t) ->
-  token = "t#{Math.random!}"
   data =
-    chat_id: "i#{Math.random!}"
-  test-data =
     text: "t#{Math.random!}"
+  test-data =
+    chat_id: "i#{Math.random!}"
     "a#{Math.random!}": "aa#{Math.random!}"
     "b#{Math.random!}": "bb#{Math.random!}"
     "c#{Math.random!}": "cc#{Math.random!}"
     "d#{Math.random!}": "dd#{Math.random!}"
+  options =
+    token: "t#{Math.random!}"
+    params: test-data
   data <<< test-data
 
   n = nock nock-host
@@ -151,18 +153,20 @@ tape 'full parameter specifying' (t) ->
       nock.clean-all!
 
   t.timeout-after 500
-  index token, data.chat_id, index, test-data
+  index options, data.text
 
 tape 'full parameter currying' (t) ->
-  token = "t#{Math.random!}"
   data =
-    chat_id: "i#{Math.random!}"
-  test-data =
     text: "t#{Math.random!}"
+  test-data =
+    chat_id: "i#{Math.random!}"
     "a#{Math.random!}": "aa#{Math.random!}"
     "b#{Math.random!}": "bb#{Math.random!}"
     "c#{Math.random!}": "cc#{Math.random!}"
     "d#{Math.random!}": "dd#{Math.random!}"
+  options =
+    token: "t#{Math.random!}"
+    params: test-data
   data <<< test-data
 
   n = nock nock-host
@@ -174,31 +178,25 @@ tape 'full parameter currying' (t) ->
       nock.clean-all!
 
   t.timeout-after 500
-  curry = index token, data.chat_id, index
-  curry test-data
+  curry = index options
+  curry data.text
 
 tape 'full parameter chaining' (t) ->
-  token = "t#{Math.random!}"
-
   data =
-    chat_id: "i#{Math.random!}"
-  test-data =
     text: "t#{Math.random!}"
-    "a#{Math.random!}": "aa#{Math.random!}"
-    "b#{Math.random!}": "bb#{Math.random!}"
-    "c#{Math.random!}": "cc#{Math.random!}"
-    "d#{Math.random!}": "dd#{Math.random!}"
-  data <<< test-data
-
   data-alt =
-    chat_id: data.chat_id
-  test-data-alt =
     text: "t#{Math.random!}"
+  test-data =
+    chat_id: "i#{Math.random!}"
     "a#{Math.random!}": "aa#{Math.random!}"
     "b#{Math.random!}": "bb#{Math.random!}"
     "c#{Math.random!}": "cc#{Math.random!}"
     "d#{Math.random!}": "dd#{Math.random!}"
-  data-alt <<< test-data-alt
+  options =
+    token: "t#{Math.random!}"
+    params: test-data
+  data <<< test-data
+  data-alt <<< test-data
 
   remaining = 2
   check = ->
@@ -215,8 +213,8 @@ tape 'full parameter chaining' (t) ->
     .reply 200, check
 
   t.timeout-after 500
-  chain = index token, data.chat_id, index, test-data
-  chain test-data-alt
+  chain = index options, data.text
+  chain data-alt.text
 
 tape 'extract tokens from urls' (t) ->
   token = "tle#{Math.random!}"
@@ -236,24 +234,30 @@ tape 'extract tokens from urls' (t) ->
   t.timeout-after 500
   index token-test, data.chat_id, data.text
 
-tape 'empty function currying' (t) ->
+tape 'empty function calling' (t) ->
   token = "t#{Math.random!}"
   data =
     chat_id: "i#{Math.random!}"
     text: util.format!
 
-  stopstop = index!
-  t.is stopstop, index, 'returns itself'
-  stopit = (stopstop token)!
+  t
+    ..throws index, 'no parameters'
+    ..throws (stopme = stopstop token), 'with token'
+    ..throws (stopit = stopme data.chat_id), 'with id'
+    ..throws (stopitobj = index {}), 'with object'
 
-  n = nock nock-host
-    .post "/bot#{token}/sendMessage", -> true #it === data
-    .reply 200, ->
+  remaining = 2
+  check = ->
+    unless --remaining
       t
-        ..pass 'expected request sent'
+        ..pass 'expected requests sent'
         ..end!
       nock.clean-all!
+  n = nock nock-host
+    .post "/bot#{token}/sendMessage", -> it === data
+    .times 2
+    .reply 200, -> check
 
   t.timeout-after 500
-  (stopit data.chat_id)!
-  # (stopstop token, data.chat_id)!
+  stopit!
+  stopitobj!
