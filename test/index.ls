@@ -199,3 +199,19 @@ tape 'full parameter chaining' (t) ->
   t.timeout-after 500
   chain = index token, data.chat_id, index, test-data
   chain test-data-alt
+
+tape 'remove bot from beginning of token' (t) ->
+  token = "tle#{Math.random!}"
+  token-test = "/bot#{token}"
+  data =
+    chat_id: "i#{Math.random!}"
+    text: "t#{Math.random!}"
+
+  n = nock nock-host
+    .post "/bot#{token}/sendMessage", -> it === data
+    .reply 200, ->
+      t.end!
+      nock.clean-all!
+
+  t.timeout-after 500
+  index token-test, data.chat_id, data.text
