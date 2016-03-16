@@ -1,11 +1,12 @@
 require! <[request util extend]>
 
+_=->it
 module.exports = ->
   switch typeof it
   | \string => curry ...
   | \object => stoptions ...
   | _       => throw new Error 'First parameter must be options or a token'
-curry = (token, chat_id) -> stoptions {token, params: {chat_id}} ...&[2 to -1]
+curry = (token, chat_id) --> stoptions {token, params: {chat_id}}, ...&[2 to -1]
 stoptions = ->
   options = extend true, {}, it
   throw new Error "Missing 'token' option" unless options.token?
@@ -21,9 +22,10 @@ stoptions = ->
     throw new Error "Invalid chat_id: #{options.params.chat_id}"
   stopit = ->
     request.post do
-      uri: "https://api.telegram.org/bot#{options.token}/sendMessage"
-      form: extend, true, {}, options.params, text: util~format ...
+      url: "https://api.telegram.org/bot#{options.token}/sendMessage"
+      form: extend true, {}, options.params, text: util~format ...
       ->
     stopit
-  |> -> it.now = -> stoptions (extend true, {}, options, it), ...&[1 to -1]
-  if &length > 1 then stopit ...&[1 to -1] else stopit
+  |> _
+    ..now = -> stoptions (extend true, {}, options, it), ...&[1 to -1]
+    .. ...&[1 to -1] if &length > 1

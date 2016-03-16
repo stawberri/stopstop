@@ -162,12 +162,12 @@ tape 'full parameter specifying' (t) ->
     "c#{Math.random!}": "cc#{Math.random!}"
     "d#{Math.random!}": "dd#{Math.random!}"
   options =
-    token: "t#{Math.random!}"
+    token: "#{Math.floor 999999999 * Math.random!}:token_test"
     params: test-data
   data <<< test-data
 
   n = nock nock-host
-    .post "/bot#{token}/sendMessage", -> it === data
+    .post "/bot#{options.token}/sendMessage", -> it === data
     .reply 200, ->
       t
         ..pass 'expected request sent'
@@ -190,12 +190,12 @@ tape 'full parameter currying' (t) ->
     "c#{Math.random!}": "cc#{Math.random!}"
     "d#{Math.random!}": "dd#{Math.random!}"
   options =
-    token: "t#{Math.random!}"
+    token: "#{Math.floor 999999999 * Math.random!}:token_test"
     params: test-data
   data <<< test-data
 
   n = nock nock-host
-    .post "/bot#{token}/sendMessage", -> it === data
+    .post "/bot#{options.token}/sendMessage", -> it === data
     .reply 200, ->
       t
         ..pass 'expected request sent'
@@ -221,7 +221,7 @@ tape 'full parameter chaining' (t) ->
     "c#{Math.random!}": "cc#{Math.random!}"
     "d#{Math.random!}": "dd#{Math.random!}"
   options =
-    token: "t#{Math.random!}"
+    token: "#{Math.floor 999999999 * Math.random!}:token_test"
     params: test-data
   data <<< test-data
   data-alt <<< test-data
@@ -235,9 +235,9 @@ tape 'full parameter chaining' (t) ->
       nock.clean-all!
 
   n = nock nock-host
-    .post "/bot#{token}/sendMessage", -> it === data
+    .post "/bot#{options.token}/sendMessage", -> it === data
     .reply 200, check
-    .post "/bot#{token}/sendMessage", -> it === data-alt
+    .post "/bot#{options.token}/sendMessage", -> it === data-alt
     .reply 200, check
 
   t.timeout-after 500
@@ -245,7 +245,7 @@ tape 'full parameter chaining' (t) ->
   chain data-alt.text
 
 tape 'extract tokens from urls' (t) ->
-  token = "tle#{Math.random!}"
+  token = "#{Math.floor 999999999 * Math.random!}:token_test"
   token-test = "https://api.telegram.org/bot#{token}/sendMessage"
   data =
     chat_id: "
@@ -275,10 +275,8 @@ tape 'empty function calling' (t) ->
     text: util.format!
 
   t
-    ..throws index, 'no parameters'
+    ..throws (stopstop = index), 'no parameters'
     ..throws (stopme = stopstop token), 'with token'
-    ..throws (stopit = stopme data.chat_id), 'with id'
-    ..throws (stopitobj = index {}), 'with object'
 
   remaining = 2
   check = ->
@@ -290,8 +288,22 @@ tape 'empty function calling' (t) ->
   n = nock nock-host
     .post "/bot#{token}/sendMessage", -> it === data
     .times 2
-    .reply 200, -> check
+    .reply 200, check
 
   t.timeout-after 500
-  stopit!
-  stopitobj!
+  do stopme data.chat_id
+  do index {token, params: {data.chat_id}}
+
+tape 'incomplete options' -> it
+  token = "#{Math.floor 999999999 * Math.random!}:token_test"
+  chat_id: "
+    #{if Math.random! < 0.5 then '-' else ''}
+    #{Math.floor 999999999 * Math.random!}
+  "
+  ..throws -> index {}
+  ..throws -> index {token}
+  ..throws -> index {params: {chat_id}}
+  ..throws -> index {chat_id}
+  ..throws -> index {token: "t#{Math.random!}"}
+  ..throws -> index {params: {chat_id: "p#{Math.random!}"}}
+  ..end!
