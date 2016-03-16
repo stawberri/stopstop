@@ -24,7 +24,6 @@ tape 'simple use case' (t) ->
       nock.clean-all!
 
   t.timeout-after 500
-  t.comment data.chat_id
   index token, data.chat_id, data.text
 
 tape 'curry api token' (t) ->
@@ -294,16 +293,31 @@ tape 'empty function calling' (t) ->
   do stopme data.chat_id
   do index {token, params: {data.chat_id}}
 
-tape 'incomplete options' -> it
+tape 'incomplete options' (t) ->
   token = "#{Math.floor 999999999 * Math.random!}:token_test"
-  chat_id: "
-    #{if Math.random! < 0.5 then '-' else ''}
-    #{Math.floor 999999999 * Math.random!}
-  "
-  ..throws -> index {}
-  ..throws -> index {token}
-  ..throws -> index {params: {chat_id}}
-  ..throws -> index {chat_id}
-  ..throws -> index {token: "t#{Math.random!}"}
-  ..throws -> index {params: {chat_id: "p#{Math.random!}"}}
-  ..end!
+  data =
+    chat_id: "
+      #{if Math.random! < 0.5 then '-' else ''}
+      #{Math.floor 999999999 * Math.random!}
+    "
+    text: "t#{Math.random!}"
+
+  t
+    ..throws -> index {}, 'empty object'
+    ..throws -> index {token}, 'only token'
+    ..throws -> index {params: {data.chat_id}}, 'only chat_id'
+    ..throws -> index {token, data.chat_id}, 'bad chat_id placement'
+    ..throws -> index {data.chat_id}, 'only chat_id, bad placement'
+    ..throws -> index {token: "t#{Math.random!}"}, 'bad token'
+    ..throws -> index {params: {chat_id: "p#{Math.random!}"}}, 'bad chat_id'
+
+  n = nock nock-host
+    .post "/bot#{token}/sendMessage", -> it === data
+    .reply 200, ->
+      t
+        ..pass 'expected request sent'
+        ..end!
+      nock.clean-all!
+
+  t.timeout-after 500
+  index token, data.chat_id, data.text
