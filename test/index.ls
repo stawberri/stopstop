@@ -218,9 +218,9 @@ tape 'full parameter chaining' (t) ->
   chain = index token, data.chat_id, index, test-data
   chain test-data-alt
 
-tape 'remove bot from beginning of token' (t) ->
+tape 'extract tokens from urls' (t) ->
   token = "tle#{Math.random!}"
-  token-test = "/bot#{token}"
+  token-test = "https://api.telegram.org/bot#{token}/sendMessage"
   data =
     chat_id: "i#{Math.random!}"
     text: "t#{Math.random!}"
