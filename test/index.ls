@@ -15,7 +15,9 @@ tape 'simple use case' (t) ->
   n = nock nock-host
     .post "/bot#{token}/sendMessage", -> it === data
     .reply 200, ->
-      t.end!
+      t
+        ..pass 'expected request sent'
+        ..end!
       nock.clean-all!
 
   t.timeout-after 500
@@ -30,7 +32,9 @@ tape 'curry api token' (t) ->
   n = nock nock-host
     .post "/bot#{token}/sendMessage", -> it === data
     .reply 200, ->
-      t.end!
+      t
+        ..pass 'expected request sent'
+        ..end!
       nock.clean-all!
 
   t.timeout-after 500
@@ -46,7 +50,9 @@ tape 'curry api token and recipient together' (t) ->
   n = nock nock-host
     .post "/bot#{token}/sendMessage", -> it === data
     .reply 200, ->
-      t.end!
+      t
+        ..pass 'expected request sent'
+        ..end!
       nock.clean-all!
 
   t.timeout-after 500
@@ -62,7 +68,9 @@ tape 'curry api token and recipient separately' (t) ->
   n = nock nock-host
     .post "/bot#{token}/sendMessage", -> it === data
     .reply 200, ->
-      t.end!
+      t
+        ..pass 'expected request sent'
+        ..end!
       nock.clean-all!
 
   t.timeout-after 500
@@ -87,7 +95,9 @@ tape 'more complicated outputs' (t) ->
   n = nock nock-host
     .post "/bot#{token}/sendMessage", -> it === data
     .reply 200, ->
-      t.end!
+      t
+        ..pass 'expected request sent'
+        ..end!
       nock.clean-all!
 
   t.timeout-after 500
@@ -105,7 +115,9 @@ tape 'function chaining' (t) ->
   remaining = 2
   check = ->
     unless --remaining
-      t.end!
+      t
+        ..pass 'expected requests sent'
+        ..end!
       nock.clean-all!
 
   n = nock nock-host
@@ -133,7 +145,9 @@ tape 'full parameter specifying' (t) ->
   n = nock nock-host
     .post "/bot#{token}/sendMessage", -> it === data
     .reply 200, ->
-      t.end!
+      t
+        ..pass 'expected request sent'
+        ..end!
       nock.clean-all!
 
   t.timeout-after 500
@@ -154,7 +168,9 @@ tape 'full parameter currying' (t) ->
   n = nock nock-host
     .post "/bot#{token}/sendMessage", -> it === data
     .reply 200, ->
-      t.end!
+      t
+        ..pass 'expected request sent'
+        ..end!
       nock.clean-all!
 
   t.timeout-after 500
@@ -187,7 +203,9 @@ tape 'full parameter chaining' (t) ->
   remaining = 2
   check = ->
     unless --remaining
-      t.end!
+      t
+        ..pass 'expected requests sent'
+        ..end!
       nock.clean-all!
 
   n = nock nock-host
@@ -210,7 +228,9 @@ tape 'remove bot from beginning of token' (t) ->
   n = nock nock-host
     .post "/bot#{token}/sendMessage", -> it === data
     .reply 200, ->
-      t.end!
+      t
+        ..pass 'expected request sent'
+        ..end!
       nock.clean-all!
 
   t.timeout-after 500
@@ -229,7 +249,9 @@ tape 'first two arguments must be defined' (t) ->
   n = nock nock-host
     .post "/bot#{token}/sendMessage", -> it === data
     .reply 200, ->
-      t.end!
+      t
+        ..pass 'expected request sent'
+        ..end!
       nock.clean-all!
 
   t.timeout-after 500
