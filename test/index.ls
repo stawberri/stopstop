@@ -7,7 +7,10 @@ tape 'function definition' -> it
 nock-host = \https://api.telegram.org/
 
 tape 'simple use case' (t) ->
-  token = "#{Math.floor 999999999 * Math.random!}:a-token_test"
+  token = "
+    #{Math.floor 999999999 * Math.random!}:
+    token-test_ABC-DEF1234ghIkl-zyx57W2v1u123ew11
+  "
   data =
     chat_id: "
       #{if Math.random! < 0.5 then '-' else ''}
@@ -27,7 +30,10 @@ tape 'simple use case' (t) ->
   index token, data.chat_id, data.text
 
 tape 'curry api token' (t) ->
-  token = "#{Math.floor 999999999 * Math.random!}:a-token_test"
+  token = "
+    #{Math.floor 999999999 * Math.random!}:
+    token-test_ABC-DEF1234ghIkl-zyx57W2v1u123ew11
+  "
   data =
     chat_id: "
       #{if Math.random! < 0.5 then '-' else ''}
@@ -48,7 +54,10 @@ tape 'curry api token' (t) ->
   curry data.chat_id, data.text
 
 tape 'curry api token and recipient together' (t) ->
-  token = "#{Math.floor 999999999 * Math.random!}:a-token_test"
+  token = "
+    #{Math.floor 999999999 * Math.random!}:
+    token-test_ABC-DEF1234ghIkl-zyx57W2v1u123ew11
+  "
   data =
     chat_id: "
       #{if Math.random! < 0.5 then '-' else ''}
@@ -69,7 +78,10 @@ tape 'curry api token and recipient together' (t) ->
   curry data.text
 
 tape 'curry api token and recipient separately' (t) ->
-  token = "#{Math.floor 999999999 * Math.random!}:a-token_test"
+  token = "
+    #{Math.floor 999999999 * Math.random!}:
+    token-test_ABC-DEF1234ghIkl-zyx57W2v1u123ew11
+  "
   data =
     chat_id: "
       #{if Math.random! < 0.5 then '-' else ''}
@@ -91,7 +103,10 @@ tape 'curry api token and recipient separately' (t) ->
   curry data.text
 
 tape 'more complicated outputs' (t) ->
-  token = "#{Math.floor 999999999 * Math.random!}:a-token_test"
+  token = "
+    #{Math.floor 999999999 * Math.random!}:
+    token-test_ABC-DEF1234ghIkl-zyx57W2v1u123ew11
+  "
 
   test-string = "s#{Math.random!} %j #{Math.random!}s"
   test-data =
@@ -119,7 +134,10 @@ tape 'more complicated outputs' (t) ->
   index token, data.chat_id, test-string, test-data
 
 tape 'function chaining' (t) ->
-  token = "#{Math.floor 999999999 * Math.random!}:a-token_test"
+  token = "
+    #{Math.floor 999999999 * Math.random!}:
+    token-test_ABC-DEF1234ghIkl-zyx57W2v1u123ew11
+  "
   data =
     chat_id: "
       #{if Math.random! < 0.5 then '-' else ''}
@@ -161,7 +179,10 @@ tape 'full parameter specifying' (t) ->
     "c#{Math.random!}": "cc#{Math.random!}"
     "d#{Math.random!}": "dd#{Math.random!}"
   options =
-    token: "#{Math.floor 999999999 * Math.random!}:a-token_test"
+    token: "
+      #{Math.floor 999999999 * Math.random!}:
+      token-test_ABC-DEF1234ghIkl-zyx57W2v1u123ew11
+    "
     params: test-data
   data <<< test-data
 
@@ -189,7 +210,10 @@ tape 'full parameter currying' (t) ->
     "c#{Math.random!}": "cc#{Math.random!}"
     "d#{Math.random!}": "dd#{Math.random!}"
   options =
-    token: "#{Math.floor 999999999 * Math.random!}:a-token_test"
+    token: "
+      #{Math.floor 999999999 * Math.random!}:
+      token-test_ABC-DEF1234ghIkl-zyx57W2v1u123ew11
+    "
     params: test-data
   data <<< test-data
 
@@ -220,7 +244,10 @@ tape 'full parameter chaining' (t) ->
     "c#{Math.random!}": "cc#{Math.random!}"
     "d#{Math.random!}": "dd#{Math.random!}"
   options =
-    token: "#{Math.floor 999999999 * Math.random!}:a-token_test"
+    token: "
+      #{Math.floor 999999999 * Math.random!}:
+      token-test_ABC-DEF1234ghIkl-zyx57W2v1u123ew11
+    "
     params: test-data
   data <<< test-data
   data-alt <<< test-data
@@ -244,7 +271,10 @@ tape 'full parameter chaining' (t) ->
   chain data-alt.text
 
 tape 'extract tokens from urls' (t) ->
-  token = "#{Math.floor 999999999 * Math.random!}:a-token_test"
+  token = "
+    #{Math.floor 999999999 * Math.random!}:
+    token-test_ABC-DEF1234ghIkl-zyx57W2v1u123ew11
+  "
   token-test = "https://api.telegram.org/bot#{token}/sendMessage"
   data =
     chat_id: "
@@ -265,7 +295,10 @@ tape 'extract tokens from urls' (t) ->
   index token-test, data.chat_id, data.text
 
 tape 'empty function calling' (t) ->
-  token = "#{Math.floor 999999999 * Math.random!}:a-token_test"
+  token = "
+    #{Math.floor 999999999 * Math.random!}:
+    token-test_ABC-DEF1234ghIkl-zyx57W2v1u123ew11
+  "
   data =
     chat_id: "
       #{if Math.random! < 0.5 then '-' else ''}
@@ -294,7 +327,10 @@ tape 'empty function calling' (t) ->
   do index {token, params: {data.chat_id}}
 
 tape 'incomplete options' (t) ->
-  token = "#{Math.floor 999999999 * Math.random!}:a-token_test"
+  token = "
+    #{Math.floor 999999999 * Math.random!}:
+    token-test_ABC-DEF1234ghIkl-zyx57W2v1u123ew11
+  "
   data =
     chat_id: "
       #{if Math.random! < 0.5 then '-' else ''}
