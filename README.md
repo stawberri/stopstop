@@ -28,7 +28,7 @@ stopit('Meow~');
 - [Making a bot and finding your chat id](#making-a-bot-and-finding-your-chat-id)
   - [Getting a telegram bot's api token](#getting-a-telegram-bots-api-token)
   - [Getting your chat id](#getting-your-chat-id)
-- [Some more examples](#some-more-examples)
+- [More examples](#more-examples)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
@@ -65,8 +65,8 @@ This is stopstop without being given output data. You probably actually want to 
 * `chat_id` _number_. This is where you specify who you want your bot to send messages to.
 * **returns** _stopit_. This gives you a `stopit`, which is what you use to send messages on Telegram!
 
-Alternate form:  `stopme(chat-id)`
-Similar: [stopstop(options)](#stopstopoptions)
+Alternate form:  `stopme(chat-id)`  
+Similar: [`stopstop(options)`](#stopstopoptions)
 
 ### stopstop(token)
 This is what happens when you pass stopstop only an api token. It's not as useful as passing it both a `token` and a `chat_id`, but it might still have some uses, such as when you have a script that might want to notify multiple people about things.
@@ -78,11 +78,11 @@ You may find stopstop's default configuration a little limiting. After all, it d
 
 ```javascript
 stopit = stopstop({
-    token: '<token>',
-    params: {
-        chat_id: 123456789,
-        parse_mode: 'markdown'
-    }
+  token: '<token>',
+  params: {
+    chat_id: 123456789,
+    parse_mode: 'markdown'
+  }
 });
 stopit("Well, who's being **a little bold** now?");
 ```
@@ -90,10 +90,10 @@ stopit("Well, who's being **a little bold** now?");
 ### stopstop(options, data[, ...])
 You'll notice that `options`, an object, is completely different from the string `token` that stopstop's other form expects as a first parameter. That's how stopstop knows which version you want. As far as stopstop is concerned, providing an `options` object replaces the first two parameters of its other form. There isn't any difference beyond that.
 * `options` _object_. Make choices about what you want stopstop to do!
-    - `token` _string_. Your bot's api token! Your messages will come from the bot this corresponds to.
-    - `params` _object_. This object is passed directly to Telegram's bot API as request parameters, so you probably wannya look at [their sendMessage reference](https://core.telegram.org/bots/api#sendmessage) for more details.
-        + `chat_id` _number_. This is where you specify who you want your bot to send messages to.
-        + `text` _nothing_. While you _can_ set a text parameter and stopstop won't throw an error, there's no point in doing so because it'll get overwritten.
+  - `token` _string_. Your bot's api token! Your messages will come from the bot this corresponds to.
+  - `params` _object_. This object is passed directly to Telegram's bot API as request parameters, so you probably wannya look at [their sendMessage reference](https://core.telegram.org/bots/api#sendmessage) for more details.
+    + `chat_id` _number_. This is where you specify who you want your bot to send messages to.
+    + `text` _nothing_. While you _can_ set a text parameter and stopstop won't throw an error, there's no point in doing so because it'll get overwritten.
 * `data` _anything_. Just think of this part as the arguments you would pass to `console.log` and you'll be fine!
 * `...` _anything_. Just like `console.log`, you can actually pass multiple data arguments and they'll get strung together!
 * **returns** _stopit_. You get another `stopit` back, which means you can actually save the return value from any complete stopstop call to make more stopstop calls with the same settings!
@@ -131,16 +131,16 @@ This is a little harder, and requires a bit of manual API work.
 
 3. If you're familiar with json, you'll find a couple objects containing your user details, including an `id` parameter. That's your chat id! If you're not familiar with json, just use your browser's search feature to search for your username, your name on Telegram, or even the message you sent your bot. Inside that tangle of brackets, you should be able to find a `"id": some-number` field that's pretty close to the rest of your user data. That's what you're looking for.
 
-    ```json
-    "from": {
-      "id": 123456789,
-      "first_name": "Your",
-      "last_name": "Name",
-      "username": "YourUsername"
-    }
-    ```
+   ```json
+   "from": {
+     "id": 123456789,
+     "first_name": "Your",
+     "last_name": "Name",
+     "username": "YourUsername"
+   }
+   ```
 
-## Some more examples
+## More examples
 You can send all sorts of things with stopstop!
 
 ```javascript
