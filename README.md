@@ -28,9 +28,7 @@ stopit('Meow~');
 - [Making a bot and finding your chat id](#making-a-bot-and-finding-your-chat-id)
   - [Getting a telegram bot's api token](#getting-a-telegram-bots-api-token)
   - [Getting your chat id](#getting-your-chat-id)
-- [Curried functions](#curried-functions)
-  - [Chaining stopstop](#chaining-stopstop)
-- [It's just like `console.log`!](#its-just-like-consolelog)
+- [Some more examples](#some-more-examples)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
