@@ -9,7 +9,7 @@
     "doctoc": "doctoc --notitle README.md",
     "prepublish": "npm run build",
     "postpublish": "npm run clean",
-    "test": "lsc test/~"
+    "test": "lsc test"
   },
   "repository": {
     "type": "git",
