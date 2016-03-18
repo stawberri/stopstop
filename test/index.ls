@@ -20,7 +20,7 @@ tape 'simple use case' (t) ->
 
   n = nock nock-host
     .post "/bot#{token}/sendMessage", -> it === data
-    .reply 200, ->
+    .reply 200 ->
       t
         ..pass 'expected request sent'
         ..end!
@@ -43,7 +43,7 @@ tape 'curry api token' (t) ->
 
   n = nock nock-host
     .post "/bot#{token}/sendMessage", -> it === data
-    .reply 200, ->
+    .reply 200 ->
       t
         ..pass 'expected request sent'
         ..end!
@@ -67,7 +67,7 @@ tape 'curry api token and recipient together' (t) ->
 
   n = nock nock-host
     .post "/bot#{token}/sendMessage", -> it === data
-    .reply 200, ->
+    .reply 200 ->
       t
         ..pass 'expected request sent'
         ..end!
@@ -91,7 +91,7 @@ tape 'curry api token and recipient separately' (t) ->
 
   n = nock nock-host
     .post "/bot#{token}/sendMessage", -> it === data
-    .reply 200, ->
+    .reply 200 ->
       t
         ..pass 'expected request sent'
         ..end!
@@ -124,7 +124,7 @@ tape 'more complicated outputs' (t) ->
 
   n = nock nock-host
     .post "/bot#{token}/sendMessage", -> it === data
-    .reply 200, ->
+    .reply 200 ->
       t
         ..pass 'expected request sent'
         ..end!
@@ -158,9 +158,9 @@ tape 'function chaining' (t) ->
 
   n = nock nock-host
     .post "/bot#{token}/sendMessage", -> it === data
-    .reply 200, check
+    .reply 200 check
     .post "/bot#{token}/sendMessage", -> it === data-alt
-    .reply 200, check
+    .reply 200 check
 
   t.timeout-after 500
   chain = index token, data.chat_id, data.text
@@ -188,7 +188,7 @@ tape 'full parameter specifying' (t) ->
 
   n = nock nock-host
     .post "/bot#{options.token}/sendMessage", -> it === data
-    .reply 200, ->
+    .reply 200 ->
       t
         ..pass 'expected request sent'
         ..end!
@@ -219,7 +219,7 @@ tape 'full parameter currying' (t) ->
 
   n = nock nock-host
     .post "/bot#{options.token}/sendMessage", -> it === data
-    .reply 200, ->
+    .reply 200 ->
       t
         ..pass 'expected request sent'
         ..end!
@@ -262,9 +262,9 @@ tape 'full parameter chaining' (t) ->
 
   n = nock nock-host
     .post "/bot#{options.token}/sendMessage", -> it === data
-    .reply 200, check
+    .reply 200 check
     .post "/bot#{options.token}/sendMessage", -> it === data-alt
-    .reply 200, check
+    .reply 200 check
 
   t.timeout-after 500
   chain = index options, data.text
@@ -285,7 +285,7 @@ tape 'extract tokens from urls' (t) ->
 
   n = nock nock-host
     .post "/bot#{token}/sendMessage", -> it === data
-    .reply 200, ->
+    .reply 200 ->
       t
         ..pass 'expected request sent'
         ..end!
@@ -320,7 +320,7 @@ tape 'empty function calling' (t) ->
   n = nock nock-host
     .post "/bot#{token}/sendMessage", -> it === data
     .times 2
-    .reply 200, check
+    .reply 200 check
 
   t.timeout-after 500
   do stopme data.chat_id
@@ -349,7 +349,7 @@ tape 'incomplete options' (t) ->
 
   n = nock nock-host
     .post "/bot#{token}/sendMessage", -> it === data
-    .reply 200, ->
+    .reply 200 ->
       t
         ..pass 'expected request sent'
         ..end!
@@ -357,3 +357,49 @@ tape 'incomplete options' (t) ->
 
   t.timeout-after 500
   index token, data.chat_id, data.text
+
+tape 'adding additional settings' (t) ->
+  token = "
+    #{Math.floor 999999999 * Math.random!}:
+    token-test_ABC-DEF1234ghIkl-zyx57W2v1u123ew11
+  "
+  other-chat-id = "
+    #{if Math.random! < 0.5 then '-' else ''}
+    #{Math.floor 999999999 * Math.random!}
+  "
+  data =
+    text: "t#{Math.random!}"
+  test-data =
+    chat_id: "
+      #{if Math.random! < 0.5 then '-' else ''}
+      #{Math.floor 999999999 * Math.random!}
+    "
+    "a#{Math.random!}": "aa#{Math.random!}"
+    "b#{Math.random!}": "bb#{Math.random!}"
+    "c#{Math.random!}": "cc#{Math.random!}"
+    "d#{Math.random!}": "dd#{Math.random!}"
+  options =
+    params: test-data
+  data <<< test-data
+  old-data =
+    chat_id: other-chat-id
+    text: "t#{Math.random!}"
+
+  remaining = 2
+  check = ->
+    unless --remaining
+      t
+        ..pass 'expected requests sent'
+        ..end!
+      nock.clean-all!
+  n = nock nock-host
+    .post "/bot#{token}/sendMessage", -> it === data
+    .reply 200 check
+    .post "/bot#{token}/sendMessage", -> it === old-data
+    .reply 200 check
+
+  stopit = index token, other-chat-id
+  newit = stopit.now options
+  t.timeout-after 500
+  stopit old-data.text
+  newit data.text
