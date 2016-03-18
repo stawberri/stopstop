@@ -23,7 +23,7 @@ stoptions = ->
     text = "#{options.prefix ? ''}#{util~format ...}#{options.suffix ? ''}"
     request.post do
       url: "https://api.telegram.org/bot#{options.token}/sendMessage"
-      form: extend true, {}, options.params, text: util~format ...
+      form: extend true, {}, options.params, {text}
       ->
     stopit
   |> (-> it)

@@ -430,4 +430,4 @@ tape 'prefix and suffix' (t) ->
 
   t.timeout-after 500
   stopit = index token, data.chat_id .now {prefix, suffix}
-  stopit data.text
+  stopit text
