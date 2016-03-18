@@ -89,11 +89,13 @@ stopit("Well, who's being **a little bold** now?");
 
 ### stopstop(options, data[, ...])
 You'll notice that `options`, an object, is completely different from the string `token` that stopstop's other form expects as a first parameter. That's how stopstop knows which version you want. As far as stopstop is concerned, providing an `options` object replaces the first two parameters of its other form. There isn't any difference beyond that.
-* `options` _object_. Make choices about what you want stopstop to do!
-  - `token` _string_. Your bot's api token! Your messages will come from the bot this corresponds to.
+* `options` _object_. Make choices about what you want stopstop to do! Everything that doesn't say **required** is optional.
+  - `token` **required** _string_. Your bot's api token! Your messages will come from the bot this corresponds to.
   - `params` _object_. This object is passed directly to Telegram's bot API as request parameters, so you probably wannya look at [their sendMessage reference](https://core.telegram.org/bots/api#sendmessage) for more details.
-    + `chat_id` _number_. This is where you specify who you want your bot to send messages to.
+    + `chat_id` **required** _number_. This is where you specify who you want your bot to send messages to.
     + `text` _nothing_. While you _can_ set a text parameter and stopstop won't throw an error, there's no point in doing so because it'll get overwritten.
+  - `prefix` _string_. If you set this to a string, it'll get added to the beginning of all of your messages. If you don't set it to anything, nothing will get added.
+  - `suffix` _string_. If you set this to a string, it'll get added to the end of all of your messages. If you don't set it to anything, nothing will get added.
 * `data` _anything_. Just think of this part as the arguments you would pass to `console.log` and you'll be fine!
 * `...` _anything_. Just like `console.log`, you can actually pass multiple data arguments and they'll get strung together!
 * **returns** _stopit_. You get another `stopit` back, which means you can actually save the return value from any complete stopstop call to make more stopstop calls with the same settings!
@@ -111,6 +113,14 @@ Similar: [`stopstop(token, chat_id)`](#stopstoptoken-chat_id)
 Changed your mind about what you wanted your `stopit`'s options to be but you don't wannya start over? Change them with this! Remember that it returns an entirely _new_ `stopit` without modifying your old one, so save its return value!
 * `options` _object_. Make choices about what you want stopstop to do!
 * **returns** _stopit_. This gives you a `stopit`, which is what you use to send messages on Telegram!
+
+```javascript
+stopit = stopstop('<token>', 123456789).now({
+  prefix: 'SUPER IMPORTANT ALERT:\n\n',
+  suffix: '\n\nThis message was brought to you by stopstop.'
+});
+stopit('I think I get it now!');
+```
 
 ## Making a bot and finding your chat id
 Before you can start using stopstop, you will need a Telegram bot and the chat ids of the chat you wish to have your bot notify.

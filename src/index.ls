@@ -20,6 +20,7 @@ stoptions = ->
   else
     throw new Error "Invalid chat_id: #{options.params.chat_id}"
   stopit = ->
+    text = "#{options.prefix ? ''}#{util~format ...}#{options.suffix ? ''}"
     request.post do
       url: "https://api.telegram.org/bot#{options.token}/sendMessage"
       form: extend true, {}, options.params, text: util~format ...

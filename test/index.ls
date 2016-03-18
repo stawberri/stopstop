@@ -403,3 +403,31 @@ tape 'adding additional settings' (t) ->
   t.timeout-after 500
   stopit old-data.text
   newit data.text
+
+
+tape 'prefix and suffix' (t) ->
+  token = "
+    #{Math.floor 999999999 * Math.random!}:
+    token-test_ABC-DEF1234ghIkl-zyx57W2v1u123ew11
+  "
+  text = "t#{Math.random!}t"
+  prefix = "pre#{Math.random!}pre"
+  suffix = "suf#{Math.random!}suf"
+  data =
+    chat_id: "
+      #{if Math.random! < 0.5 then '-' else ''}
+      #{Math.floor 999999999 * Math.random!}
+    "
+    text: prefix + text + suffix
+
+  n = nock nock-host
+    .post "/bot#{token}/sendMessage", -> it === data
+    .reply 200 ->
+      t
+        ..pass 'expected request sent'
+        ..end!
+      nock.clean-all!
+
+  t.timeout-after 500
+  stopit = index token, data.chat_id .now {prefix, suffix}
+  stopit data.text
