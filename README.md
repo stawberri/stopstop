@@ -3,6 +3,12 @@ simple telegram output passer
 
 [![NPM](https://nodei.co/npm/stopstop.png?mini=true)](https://nodei.co/npm/stopstop/)
 [![Build Status](https://travis-ci.org/stawberri/stopstop.svg?branch=master)](https://travis-ci.org/stawberri/stopstop)
+[![No Maintenance Intended](http://unmaintained.tech/badge.svg)](http://unmaintained.tech/)
+
+## Please use [mews](https://github.com/stawberri/mews) instead of this package
+I'm no longer maintaining this package since I don't use LiveScript anymore, but I wrote a new version and called it [mews](https://github.com/stawberri/mews)~
+
+---
 
 stopstop is like `console.log` over Telegram messages. Its one function package means you don't need to fumble with a full bot-making api just to send yourself error logs from a script you're too busy to watch all the time. It's named after the way historical telegrams used `STOP` instead of periods.
 
